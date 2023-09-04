@@ -1,14 +1,16 @@
 import React from "react";
 import Select from "./Select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 
-function Formulario(prop){
+
+     function Formulario(prop){
   const cantidad = 0;
   //Variables de estado
   const [selectedOption, setSelectedOption] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [tipo, setTipo] = useState(undefined);
   const [total, setTotal] =useState(null);
   //La idea es que el total sea la suma del total inicual + el total adicional
   const [totalInicial, setTotalInicial] =useState(0);
@@ -32,10 +34,13 @@ function Formulario(prop){
     setSelectedOption(event.target.value)
     if(event.target.value === "personal" )
     {       setTotalInicial(7);
+            setTipo("personal")
     }else if(event.target.value ==="mediana"){
             setTotalInicial(10);
+            setTipo("mediana")
     }else if(event.target.value ==="grande"){
             setTotalInicial(12);
+            setTipo("grande")
     }
   }
   const handleCount = (checkID) =>{
@@ -45,6 +50,58 @@ function Formulario(prop){
         setCount(count - 1);
       } 
   }
+const handleAdicional= ()=>{
+    if(tipo === "personal"){
+        if(count===3){
+            setTotalAdicional(1)
+            setTotal(7+1)
+        }else if(count ===4){
+            setTotalAdicional(0.75*2)
+            setTotal(7+0.75*2)
+        }else if(count===5){
+            setTotalAdicional(0.5*3)
+            setTotal(7+0.5*3)
+        }else if(count>5){
+            setTotalAdicional(0.25*4)
+            setTotal(7+0.25*4)
+        }
+
+    }else if(tipo==="mediana"){
+        if(count===3){
+            setTotalAdicional(2)
+            setTotal(10+2)
+        }else if(count ===4){
+            setTotalAdicional(1*2)
+            setTotal(10+1*2)
+        }else if(count===5){
+            setTotalAdicional(0.75*3)
+            setTotal(10+0.75*3)
+        }else if(count>5){
+            setTotalAdicional(0.5*4)
+            setTotal(10+0.5*4)
+        }
+
+    }else if(tipo==="grande"){
+        if(count===3){
+            setTotalAdicional(2.5)
+            setTotal(12+2.5)
+        }else if(count ===4){
+            setTotalAdicional(2*2)
+            setTotal(12+2*2)
+        }else if(count===5){
+            setTotalAdicional(1*3)
+            setTotal(12+1*3)
+        }else if(count>5){
+            setTotalAdicional(0.75*4)
+            setTotal(12+0.75*4)
+        }
+    }
+  
+  }
+  useEffect(() => {
+    handleAdicional();
+  }, [tipo, count]);
+
   {/**
     // Genera un arreglo de datos para usar en los componentes Item
     const data = Array.from({ length: cantidad }, (_, index) => ({
@@ -61,6 +118,10 @@ function Formulario(prop){
                 <img src={require('../img/pizza2.png')} class="w-400"/>
             </div>
             <div className="md:w-4/12 p-6 rounded-lg shadow-xl bg-amber-400">
+            <div className="mb-5">
+                  <legend className="font-bold uppercase ml-1 mb-1 text-center font-serif underline">Creación de Pizza</legend>
+                  <p className="font-serif p-1 text-center">Arma tu pizza a tu manera</p>
+              </div>
                 <form>
                     <div className="mb-5">
                         <label id="name" className="mb-2 block uppercase  font-bold">
@@ -69,7 +130,7 @@ function Formulario(prop){
                         <input id="name"name="name"type="text"placeholder="El nombre del cliente"className="border p-3 w-full rounded-lg"/>
                     </div>
                     <fieldset className="mb-5 border">
-                    <div className="mb-5">
+                      <div className="mb-5">
                       <legend className="font-bold uppercase ml-1">Tamaño</legend>
                       </div>
                     <div className="mb-5 ml-5">
@@ -96,36 +157,42 @@ function Formulario(prop){
 
                             <input type="checkbox" id="jamonID" name="jamon" value="jamon" className="mr-2" 
                             onChange={() => {
-                                           handleCount('jamonID'); 
+                                           handleCount('jamonID');
+                                           handleAdicional(); 
                                            }}/>
                             <label for="huey" className="ml-1 text-black-400">Jamón</label>
 
                             <input type="checkbox" id="salamiID" name="salami" value="salami" className="ml-2"
                             onChange={() => {
-                                            handleCount('salamiID')
+                                            handleCount('salamiID');
+                                            handleAdicional(); 
                                             }}/>
                             <label for="dewey" className="ml-1">Salami</label>
                             <input type="checkbox" id="pinaID" name="pina" value="pina" className="ml-2" 
                             onChange={() => {
-                                            handleCount('pinaID')
+                                            handleCount('pinaID');
+                                            handleAdicional(); 
                                             }}/>
                             <label for="huey" className="ml-1 text-black-400">Piña</label>
                             
                             <input type="checkbox" id="salchichaID" name="salchicha" value="salchicha" className="ml-2"
                             onChange={() => {
-                                            handleCount('salchichaID')
+                                            handleCount('salchichaID');
+                                            handleAdicional(); 
                                             }}/>
                             <label for="dewey" className="ml-1">Salchicha</label>
                             
                             <input type="checkbox" id="carneID" name="carne" value="carne" className="ml-2"
                             onChange={() => {
-                                            handleCount('carneID')
+                                            handleCount('carneID');
+                                            handleAdicional(); 
                                             }}/>
                             <label for="dewey" className="ml-1">Carne</label>
 
                             <input type="checkbox" id="tocinoID" name="tocino" value="tocino" className="ml-2"
                             onChange={() => {
-                                            handleCount('tocinoID')
+                                            handleCount('tocinoID');
+                                            handleAdicional(); 
                                             }}/>
                             <label for="dewey" className="ml-1">Tocino</label>
                             {/**
@@ -144,7 +211,7 @@ function Formulario(prop){
                         <fieldset className="mb-5 border">
                         <div className="mb-2 flex">
                             <legend className="font-bold uppercase mr-2 ml-1">Total:</legend>
-                            <h1 className="font-bold">${totalInicial}</h1>
+                            <h1 className="font-bold">${totalInicial+totalAdicional}</h1>
                         </div>
                         </fieldset>
                     </div>
@@ -193,5 +260,5 @@ function Formulario(prop){
         <Footer/>
         </div>
     );
-}
+};
 export default Formulario;
