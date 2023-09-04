@@ -3,6 +3,7 @@ import Select from "./Select";
 import { useState, useEffect } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import { useModal } from "./useModal";
 
 
      function Formulario(prop){
@@ -16,6 +17,7 @@ import Footer from "./Footer";
   const [totalInicial, setTotalInicial] =useState(0);
   const [totalAdicional, setTotalAdicional] =useState(0);
   const [count, setCount] =useState(0);
+  const [name, setName] =useState(null);
   //Verifica el cambio del radiobutton
   /** 
    * const handleOptionChange = (event) => {
@@ -50,6 +52,12 @@ import Footer from "./Footer";
         setCount(count - 1);
       } 
   }
+
+  const [isOpenModal1,openModal1,closeModal1,selectedProduct1] = useModal(false);
+  const handleName = (event) => {
+    setName(event.target.value);
+  }
+
 const handleAdicional= ()=>{
     if(tipo === "personal"){
         if(count===3){
@@ -127,7 +135,7 @@ const handleAdicional= ()=>{
                         <label id="name" className="mb-2 block uppercase  font-bold">
                         Nombre del cliente 
                         </label>
-                        <input id="name"name="name"type="text"placeholder="El nombre del cliente"className="border p-3 w-full rounded-lg"/>
+                        <input id="name"name="name" onChange={handleName} type="text"placeholder="El nombre del cliente"className="border p-3 w-full rounded-lg"/>
                     </div>
                     <fieldset className="mb-5 border">
                       <div className="mb-5">
@@ -252,7 +260,7 @@ const handleAdicional= ()=>{
                         
                     )*/}            
                     <input type="submit" value="Enviar" className="bg-sky-600 hover:bg-amber-600 transition-colors cursor-pointer
-                    uppercase font-bold w-full p-3 text-white rounded-lg"/>
+                    uppercase font-bold w-full p-3 text-white rounded-lg" onClick={()=>openModal1()}/>
                 </form>
                
             </div>
